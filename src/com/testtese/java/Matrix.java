@@ -7,17 +7,14 @@ public class Matrix {
     double[][] matrix;                      //成员变量为矩阵
     String name;                            //名称
 
-    public Matrix() {                       //使用无参数的构造方法时设定为 2*2 矩阵，名称为 UnnamedMatrix
-        this.matrix = new double[2][2];
-        this.name = "UnnamedMatrix";
-    }
-
-    public Matrix(String name, int row, int col) {              //使用含参数的构造方法时提供名称、行数及列数
+    //使用含参数的构造方法时提供名称、行数及列数
+    public Matrix(String name, int row, int col) {
         this.matrix = new double[row][col];
         this.name = name;
     }
 
-    public void showMatrix() {                                  //显示矩阵
+    //显示矩阵
+    public void showMatrix() {
 
         int[] maxlenofcol = new int[matrix[0].length];          //这里找出每列最长数的长度保存按列存入 []maxlenofcol
         for (int j = 0; j < matrix[0].length; j++) {
@@ -83,7 +80,8 @@ public class Matrix {
         //至此输出完毕
     }
 
-    public void setMatrix() {                                   //设定矩阵，不赘述
+    //设定矩阵，不赘述
+    public void setMatrix() {
         Scanner input = new Scanner(System.in);
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
@@ -95,12 +93,13 @@ public class Matrix {
         showMatrix();
     }
 
-    public void addMatrix(Matrix addmatrix) {                   //矩阵的和运算
+    //矩阵的和运算
+    public Matrix addMatrix(Matrix addmatrix) {
 
         //先判断两者行列是否相等，否则提示错误并退出
         if ((matrix.length != addmatrix.matrix.length) || (matrix[0].length != addmatrix.matrix[0].length)) {
-            System.out.print("\33[31;1mError, they're not same kind of matrix.\33[0m\n\n");
-            return;
+            System.out.print("\33[31;1mError, they're not same kind of matrix.\33[0m\n");
+            return null;
         }
 
         //设定一个新的矩阵 result 接收结果，名称为 <前矩阵>+<后矩阵>
@@ -111,10 +110,12 @@ public class Matrix {
                 result.matrix[i][j] = matrix[i][j] + addmatrix.matrix[i][j];
             }
         }
-        result.showMatrix();                                    //最后将 result 矩阵输出
+
+        return result;                                          //最后返回 result 矩阵
     }
 
-    public void showDet() {                                     //显示行列式
+    //显示行列式
+    public void showDet() {
 
         //先判断是否为方阵，否则提示错误并退出
         if (matrix.length != matrix[0].length) {
@@ -134,7 +135,7 @@ public class Matrix {
 
         for (int i = 0; i < matrix.length; i++) {               //按行输出
 
-            String namae = "det(" + name + ")";                     //新字符串 namae 替代 name 输出
+            String namae = "det(" + name + ")";                 //新字符串 namae 替代 name 输出
 
             if (i == ((matrix.length - 1) / 2)) {               //对于居中行，输出名称、等于号和竖线
                 System.out.printf("%s = |  ", namae);
@@ -159,7 +160,8 @@ public class Matrix {
         //至此输出完毕
     }
 
-    public Matrix minorOfMatrix(int row, int col) {                //矩阵的“余矩阵”
+    //矩阵的“余矩阵”
+    public Matrix minorOfMatrix(int row, int col) {
 
         //命名以及框定大小
         Matrix minorofmatrix = new Matrix("Minor of " + name + "'s " + (row + 1) + "_" + (col + 1), matrix.length - 1, matrix.length - 1);
@@ -182,7 +184,8 @@ public class Matrix {
         return minorofmatrix;               //最终返回一个矩阵
     }
 
-    public double detOfMatrix() {                               //矩阵的行列式
+    //矩阵的行列式
+    public double detOfMatrix() {
 
         //先判断是否为方阵，否则提示错误并退出
         if (matrix.length != matrix[0].length) {
@@ -192,10 +195,10 @@ public class Matrix {
 
         if (matrix.length == 2) {                               //当行列式二阶时直接使用公式
             return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-        }else {                                                 //否则按行展开
-            double result=0;
-            for(int i=0;i<matrix.length;i++){
-                result += Math.pow(-1,i) * matrix[i][0] * minorOfMatrix(i,0).detOfMatrix();
+        } else {                                                //否则按行展开
+            double result = 0;
+            for (int i = 0; i < matrix.length; i++) {
+                result += Math.pow(-1, i) * matrix[i][0] * minorOfMatrix(i, 0).detOfMatrix();
             }
             return result;
         }
