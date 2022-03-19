@@ -193,7 +193,9 @@ public class Matrix {
             return 0;
         }
 
-        if (matrix.length == 2) {                               //当行列式二阶时直接使用公式
+        if (matrix.length == 1) {                               //当行列式一阶是直接输出该值
+            return matrix[0][0];
+        } else if (matrix.length == 2) {                        //当行列式二阶时直接使用公式
             return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
         } else {                                                //否则按行展开
             double result = 0;
