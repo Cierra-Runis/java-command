@@ -246,8 +246,9 @@ public class CommandForMatrix {
                 //前两者同型则 result 不为 null
                 if (result != null) {
                     //把结果给至矩阵库
+                    matrices[matrixindex] = new Matrix(matrix_C,matrices[indexofA].matrix.length,matrices[indexofA].matrix[0].length);
                     matrices[matrixindex].matrix = result.matrix;
-                    matrices[matrixindex].name = matrix_C;
+                    matrices[matrixindex].showMatrix();
                     //创建好了，那么矩阵库的矩阵数就加一
                     matrixindex++;
                 } else {
@@ -367,8 +368,8 @@ public class CommandForMatrix {
         //至此完全合理，开始设定步骤
         Scanner setvaule = new Scanner(System.in);
         System.out.printf("Enter %s[%d][%d] = ", name, row, col);
-        matrices[index - 1].matrix[row - 1][col - 1] = setvaule.nextDouble();
-        System.out.printf("%s[%d][%d] had set as %s\n\n", name, row, col, matrices[index - 1].matrix[row - 1][col - 1]);
+        matrices[index].matrix[row - 1][col - 1] = setvaule.nextDouble();
+        System.out.printf("%s[%d][%d] had set as %s\n\n", name, row, col, matrices[index].matrix[row - 1][col - 1]);
     }
 
     //第七个命令，显示矩阵
