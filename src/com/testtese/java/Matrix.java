@@ -168,20 +168,25 @@ public class Matrix {
         //下面是算法，细节略
         int rownum = 0;
         int colnum = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            if (i == row) {
-                continue;
-            }
-            for (int j = 0; j < matrix[i].length; j++) {
-                if (j == col) {
+
+        if (matrix.length == 1 || matrix[0].length == 1) {
+            return null;
+        } else {
+            for (int i = 0; i < matrix.length; i++) {
+                if (i == row) {
                     continue;
                 }
-                minorofmatrix.matrix[rownum][colnum % (matrix[0].length - 1)] = matrix[i][j];
-                colnum++;
+                for (int j = 0; j < matrix[i].length; j++) {
+                    if (j == col) {
+                        continue;
+                    }
+                    minorofmatrix.matrix[rownum][colnum % (matrix[0].length - 1)] = matrix[i][j];
+                    colnum++;
+                }
+                rownum++;
             }
-            rownum++;
+            return minorofmatrix;           //最终返回一个矩阵
         }
-        return minorofmatrix;               //最终返回一个矩阵
     }
 
     //矩阵的行列式

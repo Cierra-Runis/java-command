@@ -11,22 +11,22 @@ public class CommandForMatrix {
 
     //下面为指令库，要求不重复，若为 /help 这种后面不接东西的要求指令最后不为空格
     //反之则需要空格
-    public final String[] Command = {"/help",
-            "/create matrix ",
-            "/add matrix ",
-            "/show det ",
-            "/show minor ",
-            "/set matrix ",
+    public final String[] Command = {"/help",                               //帮助
+            "/create matrix ",                                              //创建
+            "/add matrix ",                                                 //和运算
+            "/show det ",                                                   //行列式
+            "/show minor ",                                                 //“余矩阵”
+            "/set matrix ",                                                 //显示
             "/show matrix "};
 
     //下面为帮助库，与指令库不同，帮助库仅作为提示消息
-    public final String[] Help = {"/help",
-            "/create matrix <matrix_name> <matrix_row> <matrix_col>",
-            "/add matrix <matrix_A> <matrix_B> [to] [<matrix_C>]",
-            "/show det <matrix_name>",
-            "/show minor <matrix_name> <matrix_row> <matrix_col>",
-            "/set matrix <matrix_name> <matrix_row> <matrix_col>",
-            "/show matrix <matrix_name>"};
+    public final String[] Help = {"/help",                                  //帮助
+            "/create matrix <matrix_name> <matrix_row> <matrix_col>",       //创建
+            "/add matrix <matrix_A> <matrix_B> [to] [<matrix_C>]",          //和运算
+            "/show det <matrix_name>",                                      //行列式
+            "/show minor <matrix_name> <matrix_row> <matrix_col>",          //“余矩阵”
+            "/set matrix <matrix_name> <matrix_row> <matrix_col>",          //设定元素
+            "/show matrix <matrix_name>"};                                  //显示
 
     //使用含参数的构造方法时提供输入的指令
     CommandForMatrix(String input) {
@@ -246,7 +246,7 @@ public class CommandForMatrix {
                 //前两者同型则 result 不为 null
                 if (result != null) {
                     //把结果给至矩阵库
-                    matrices[matrixindex] = new Matrix(matrix_C,matrices[indexofA].matrix.length,matrices[indexofA].matrix[0].length);
+                    matrices[matrixindex] = new Matrix(matrix_C, matrices[indexofA].matrix.length, matrices[indexofA].matrix[0].length);
                     matrices[matrixindex].matrix = result.matrix;
                     matrices[matrixindex].showMatrix();
                     //创建好了，那么矩阵库的矩阵数就加一
@@ -326,8 +326,14 @@ public class CommandForMatrix {
             return;
         }
 
-        //至此完全合理，显示“余矩阵”即可
-        matrices[index].minorOfMatrix(row - 1, col - 1).showMatrix();
+        //至此显示“余矩阵”即可
+        if (matrices[index].minorOfMatrix(row - 1, col - 1) != null) {
+            matrices[index].minorOfMatrix(row - 1, col - 1).showMatrix();
+        } else {
+            //不合理直接 illegal 处理，再把对应的帮助怼到用户脸上
+            System.out.printf("\33[31;1mMinor of %s[%d][%d] doesn't exist!\33[0m\n", name, row, col);
+            System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
+        }
     }
 
     //第六个命令，设定矩阵特定元素的值
