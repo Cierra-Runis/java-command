@@ -210,4 +210,20 @@ public class Matrix {
             return result;
         }
     }
+
+    //转置矩阵
+    public Matrix turnOfMatrix() {
+        int turnrow = matrix[0].length;
+        int turncol = matrix.length;
+        Matrix result = new Matrix("Turn of " + name, turnrow, turncol);
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                result.matrix[j][i] = matrix[i][j];
+            }
+        }
+
+        return result;
+    }
+
 }

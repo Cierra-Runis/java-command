@@ -16,8 +16,10 @@ public class CommandForMatrix {
             "/add matrix ",                                                 //和运算
             "/show det ",                                                   //行列式
             "/show minor ",                                                 //“余矩阵”
-            "/set matrix ",                                                 //显示
-            "/show matrix "};
+            "/set matrix ",                                                 //设定元素
+            "/show matrix ",                                                //显示
+            "/turn matrix "                                                 //转置
+    };
 
     //下面为帮助库，与指令库不同，帮助库仅作为提示消息
     public final String[] Help = {"/help",                                  //帮助
@@ -26,7 +28,9 @@ public class CommandForMatrix {
             "/show det <matrix_name>",                                      //行列式
             "/show minor <matrix_name> <matrix_row> <matrix_col>",          //“余矩阵”
             "/set matrix <matrix_name> <matrix_row> <matrix_col>",          //设定元素
-            "/show matrix <matrix_name>"};                                  //显示
+            "/show matrix <matrix_name>",                                   //显示
+            "/turn matrix <matrix_name>"                                    //转置
+    };
 
     //使用含参数的构造方法时提供输入的指令
     CommandForMatrix(String input) {
@@ -92,6 +96,10 @@ public class CommandForMatrix {
             }
             case 6: {
                 ShowMatrix(commandnum, command);
+                break;
+            }
+            case 7: {
+                TurnMatrix(commandnum,command);
                 break;
             }
         }
@@ -405,4 +413,35 @@ public class CommandForMatrix {
         //存在则显示
         matrices[index].showMatrix();
     }
+
+    public void TurnMatrix(int commandnum, String command){
+        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+
+        //按照 /turn matrix <matrix_name> 的描述
+        //切分后的切片有且只有一个
+        if (splitofcommand.length != 1) {
+            //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
+            System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
+            System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
+            return;
+        }
+
+        //满足格式则分配下去
+        String name = splitofcommand[0];
+        int index = searchIndexOf(name);
+
+        //判断该名为 name 的矩阵是否存在
+        if (index == -1) {
+            //不存在则提示
+            System.out.printf("\33[31;1mMatrix %s doesn't exist, please check the name of matrix you want to turn!\33[0m\n\n", name);
+            return;
+        }
+        //存在则显示
+        matrices[index].turnOfMatrix().showMatrix();
+    }
+
 }
+
+//TODO: Enter command just like /set matrix <matrix_name> <matrix_row> <matrix_col>
+// > /show det
+// Matrix  doesn't exist, please check the name of matrix you want to show!
