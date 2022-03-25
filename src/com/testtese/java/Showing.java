@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class Showing {
 
     //显示指定空格
-    public static void Blank(int num) {
+    public static void blank(int num) {
         for (int i = 0; i <= num; i++) {
             System.out.print(" ");
         }

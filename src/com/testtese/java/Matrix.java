@@ -34,32 +34,32 @@ public class Matrix {
                 for (int j = 0; j < matrix[0].length; j++) {    //这里输出每一列的元素
                     System.out.printf("%s", matrix[i][j]);
                     //下句保证左对齐
-                    Showing.Blank(maxlenofcol[j] + 1 - String.valueOf(matrix[i][j]).length());
+                    Showing.blank(maxlenofcol[j] + 1 - String.valueOf(matrix[i][j]).length());
                 }
             } else {                                            //出现多行时
                 if (i == 0) {                                   //对于第一行
                     if (matrix.length == 2) {                   //若一共两行，输出实际上和仅一行时仅有符号的差别
                         System.out.printf("%s = ┌  ", name);
                     } else {
-                        Showing.Blank(name.length() + 2);  //对于三行及以上，第一行总是会先输出如左多的空格对齐
+                        Showing.blank(name.length() + 2);  //对于三行及以上，第一行总是会先输出如左多的空格对齐
                         System.out.print("┌  ");
                     }
                 }
                 //而对于其他行
                 else if (i == matrix.length - 1) {              //对于最后一行，也是符号的差别
-                    Showing.Blank(name.length() + 2);
+                    Showing.blank(name.length() + 2);
                     System.out.print("└  ");
                 } else if (i == ((matrix.length - 1) / 2)) {    //对于居中行，输出名称、等于号和竖线
                     System.out.printf("%s = │  ", name);
                 } else {                                        //对于普通行，输出左对齐竖线
-                    Showing.Blank(name.length() + 2);
+                    Showing.blank(name.length() + 2);
                     System.out.print("│  ");
                 }
 
                 //对于每一行，输出元素时
                 for (int j = 0; j < matrix[0].length; j++) {    //先输出元素，再输出保证左对齐的空格们
                     System.out.printf("%s", matrix[i][j]);
-                    Showing.Blank(maxlenofcol[j] + 1 - String.valueOf(matrix[i][j]).length());
+                    Showing.blank(maxlenofcol[j] + 1 - String.valueOf(matrix[i][j]).length());
                 }
             }
 
@@ -140,13 +140,13 @@ public class Matrix {
             if (i == ((matrix.length - 1) / 2)) {               //对于居中行，输出名称、等于号和竖线
                 System.out.printf("%s = |  ", namae);
             } else {                                            //对于普通行，输出左对齐竖线
-                Showing.Blank(namae.length() + 2);
+                Showing.blank(namae.length() + 2);
                 System.out.print("|  ");
             }
             //对于每一行，输出元素时
             for (int j = 0; j < matrix[0].length; j++) {        //先输出元素，再输出保证左对齐的空格们
                 System.out.printf("%s", matrix[i][j]);
-                Showing.Blank(maxlenofcol[j] + 1 - String.valueOf(matrix[i][j]).length());
+                Showing.blank(maxlenofcol[j] + 1 - String.valueOf(matrix[i][j]).length());
             }
 
             //输出右框架
@@ -213,6 +213,7 @@ public class Matrix {
 
     //转置矩阵
     public Matrix turnOfMatrix() {
+
         int turnrow = matrix[0].length;
         int turncol = matrix.length;
         Matrix result = new Matrix("Turn of " + name, turnrow, turncol);
@@ -220,6 +221,24 @@ public class Matrix {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 result.matrix[j][i] = matrix[i][j];
+            }
+        }
+
+        return result;
+    }
+
+    //伴随矩阵
+    public Matrix adjointOfMatrix() {
+
+        if (matrix.length != matrix[0].length) {
+            return null;
+        }
+
+        Matrix result = new Matrix("Adjoint of " + name, matrix.length, matrix[0].length);
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                result.matrix[j][i] = Math.pow(-1, i + j) * minorOfMatrix(i, j).detOfMatrix();
             }
         }
 

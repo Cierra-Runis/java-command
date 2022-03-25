@@ -9,16 +9,16 @@ public class CommandForMatrix {
     Matrix[] matrices = new Matrix[100];
     int matrixindex = 0;
 
-    //下面为指令库，要求不重复，若为 /help 这种后面不接东西的要求指令最后不为空格
-    //反之则需要空格
-    public final String[] Command = {"/help",                               //帮助
-            "/create matrix ",                                              //创建
-            "/add matrix ",                                                 //和运算
-            "/show det ",                                                   //行列式
-            "/show minor ",                                                 //“余矩阵”
-            "/set matrix ",                                                 //设定元素
-            "/show matrix ",                                                //显示
-            "/turn matrix "                                                 //转置
+    //下面为指令库，要求不重复
+    public final String[] Command = {"/help",                              //帮助
+            "/create matrix",                                              //创建
+            "/add matrix",                                                 //和运算
+            "/show det",                                                   //行列式
+            "/show minor",                                                 //“余矩阵”
+            "/set matrix",                                                 //设定元素
+            "/show matrix",                                                //显示
+            "/turn matrix",                                                //转置
+            "/adjoin matrix"                                               //伴随矩阵
     };
 
     //下面为帮助库，与指令库不同，帮助库仅作为提示消息
@@ -29,7 +29,8 @@ public class CommandForMatrix {
             "/show minor <matrix_name> <matrix_row> <matrix_col>",          //“余矩阵”
             "/set matrix <matrix_name> <matrix_row> <matrix_col>",          //设定元素
             "/show matrix <matrix_name>",                                   //显示
-            "/turn matrix <matrix_name>"                                    //转置
+            "/turn matrix <matrix_name>",                                   //转置
+            "/adjoin matrix <matrix_name>"                                  //伴随矩阵
     };
 
     //使用含参数的构造方法时提供输入的指令
@@ -54,9 +55,10 @@ public class CommandForMatrix {
         for (i = 0; i < Command.length; i++) {              //搜索
             //若输入的指令左边部分与指令库中指令相符
             if (input.regionMatches(0, Command[i], 0, Command[i].length())) {
-                //则将左边部分切掉，把指令索引和右边部分传入 toCommand 函数
+                //则将左边部分切掉，把指令索引和右边切片传入 toCommand 函数
                 input = input.substring(Command[i].length());
-                toCommand(i, input);
+                String[] splitofcommand = input.split(" ");                 //以空格切分输入的命令
+                toCommand(i, splitofcommand);
                 return;
             }
         }
@@ -68,7 +70,7 @@ public class CommandForMatrix {
     }
 
     //根据传入的索引将索引和输入的指令分配到对应的处理部分
-    public void toCommand(int commandnum, String command) {
+    public void toCommand(int commandnum, String[] command) {
         switch (commandnum) {
             case 0: {
                 ShowHelp();
@@ -99,7 +101,11 @@ public class CommandForMatrix {
                 break;
             }
             case 7: {
-                TurnMatrix(commandnum,command);
+                TurnMatrix(commandnum, command);
+                break;
+            }
+            case 8: {
+                AdjointMatrix(commandnum, command);
                 break;
             }
         }
@@ -118,17 +124,26 @@ public class CommandForMatrix {
 
                 System.out.print("--------Help Page--------\n");            //显示帮助头
                 //若当前页为最后一页
-                if (nowpage == totalpage) {
+                if (nowpage != totalpage) {
                     //余数的限制下显示帮助
-                    for (int line = 1; line <= Help.length % lineinpage; line++) {
+                    for (int line = 1; line <= lineinpage; line++) {
                         int num = lineinpage * (nowpage - 1) + line;
                         System.out.printf("%d. %s\n", num, Help[num - 1]);
                     }
                 } else {
                     //否则在最大行数的限制下显示帮助
-                    for (int line = 1; line <= lineinpage; line++) {
-                        int num = lineinpage * (nowpage - 1) + line;
-                        System.out.printf("%d. %s\n", num, Help[num - 1]);
+                    if (Help.length % lineinpage == 0) {
+                        //当最后一页也是 9 行时，按 9 行输出
+                        for (int line = 1; line <= lineinpage; line++) {
+                            int num = lineinpage * (nowpage - 1) + line;
+                            System.out.printf("%d. %s\n", num, Help[num - 1]);
+                        }
+                    } else {
+                        //最后一页非 9 行时，按余数输出
+                        for (int line = 1; line <= Help.length % lineinpage; line++) {
+                            int num = lineinpage * (nowpage - 1) + line;
+                            System.out.printf("%d. %s\n", num, Help[num - 1]);
+                        }
                     }
                 }
                 System.out.printf("--------Page %d--------\n\n", nowpage);  //显示帮助尾
@@ -137,14 +152,12 @@ public class CommandForMatrix {
     }
 
     //第二个指令，创建矩阵
-    public void CreateMatrix(int commandnum, String command) {
-
-        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+    public void CreateMatrix(int commandnum, String[] splitofcommand) {
 
         //按照 /create matrix <matrix_name> <matrix_row> <matrix_col> 的描述
         //现在输入的部分应当满足 <matrix_name> <matrix_row> <matrix_col> 的格式
-        //先判断切分后的个数是否为 3 ，再判断后面两个是不是数字
-        if ((splitofcommand.length != 3) || !Showing.isNumeric(splitofcommand[1]) || !Showing.isNumeric(splitofcommand[2])) {
+        //先判断切分后的个数是否为 4 ，再判断后面两个是不是数字
+        if ((splitofcommand.length != 4) || !Showing.isNumeric(splitofcommand[2]) || !Showing.isNumeric(splitofcommand[3])) {
             //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
@@ -152,9 +165,9 @@ public class CommandForMatrix {
         }
 
         //满足格式则分配下去
-        String name = splitofcommand[0];
-        int row = Integer.parseInt(splitofcommand[1]);
-        int col = Integer.parseInt(splitofcommand[2]);
+        String name = splitofcommand[1];
+        int row = Integer.parseInt(splitofcommand[2]);
+        int col = Integer.parseInt(splitofcommand[3]);
         int index = searchIndexOf(name);
 
         //因为是创建矩阵，所以先判断该名为 name 的矩阵是否存在
@@ -180,26 +193,24 @@ public class CommandForMatrix {
     }
 
     //第三个指令，矩阵相加
-    public void AddMatrix(int commandnum, String command) {
-
-        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+    public void AddMatrix(int commandnum, String[] splitofcommand) {
 
         //按照 /add matrix <matrix_A> <matrix_B> [to] [<matrix_C>] 的描述
-        //因为该命令含有可选部分，先判断切分后的个数为 2 还是 4
-        if (splitofcommand.length == 2) {
+        //因为该命令含有可选部分，先判断切分后的个数为 3 还是 5
+        if (splitofcommand.length == 3) {
 
-            //切分个数为 2 时，输入的部分应当满足 <matrix_A> <matrix_B> 的格式
+            //切分个数为 3 时，输入的部分应当满足 <matrix_A> <matrix_B> 的格式
             //判断相加的两者是否存在
-            if (searchIndexOf(splitofcommand[0]) == -1 || searchIndexOf(splitofcommand[1]) == -1) {
+            if (searchIndexOf(splitofcommand[1]) == -1 || searchIndexOf(splitofcommand[2]) == -1) {
                 //不存在则提示
                 System.out.print("\33[31;1mThis name of matrix doesn't exist, please check the name of matrix you want to add!\33[0m\n\n");
                 return;
             }
 
             //至此两者都存在，但还需判断是否同型
-            String matrix_A = splitofcommand[0];
+            String matrix_A = splitofcommand[1];
             int indexofA = searchIndexOf(matrix_A);
-            String matrix_B = splitofcommand[1];
+            String matrix_B = splitofcommand[2];
             int indexofB = searchIndexOf(matrix_B);
 
             Matrix result = matrices[indexofA].addMatrix(matrices[indexofB]);
@@ -210,18 +221,18 @@ public class CommandForMatrix {
                 //不同型则把对应的帮助怼到用户脸上
                 System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
             }
-        } else if (splitofcommand.length == 4) {
+        } else if (splitofcommand.length == 5) {
 
-            //切分个数为 4 时，输入的部分应当满足 <matrix_A> <matrix_B> to <matrix_C> 的格式
-            //判断第三个切片是否为 to
-            if (!Objects.equals(splitofcommand[2], "to")) {
+            //切分个数为 5 时，输入的部分应当满足 <matrix_A> <matrix_B> to <matrix_C> 的格式
+            //判断第四个切片是否为 to
+            if (!Objects.equals(splitofcommand[3], "to")) {
                 //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
                 System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
                 System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
                 return;
             }
             //判断相加的两者是否存在
-            if (searchIndexOf(splitofcommand[0]) == -1 || searchIndexOf(splitofcommand[1]) == -1) {
+            if (searchIndexOf(splitofcommand[1]) == -1 || searchIndexOf(splitofcommand[2]) == -1) {
                 //不存在则提示
                 System.out.print("\33[31;1mThis name of matrix doesn't exist, please check the name of matrix you want to add!\33[0m\n\n");
                 return;
@@ -229,11 +240,11 @@ public class CommandForMatrix {
 
             //至此前两者都存在，最后的矩阵不一定存在
             //但先把他们的名称和索引留下
-            String matrix_A = splitofcommand[0];
+            String matrix_A = splitofcommand[1];
             int indexofA = searchIndexOf(matrix_A);
-            String matrix_B = splitofcommand[1];
+            String matrix_B = splitofcommand[2];
             int indexofB = searchIndexOf(matrix_B);
-            String matrix_C = splitofcommand[3];
+            String matrix_C = splitofcommand[4];
             int indexofC = searchIndexOf(matrix_C);
 
             //判断结果接收者是否存在
@@ -265,20 +276,18 @@ public class CommandForMatrix {
                 }
             }
         } else {
-            //切分个数不为 2 或 4 时直接 illegal 处理，再把对应的帮助怼到用户脸上
+            //切分个数不为 3 或 5 时直接 illegal 处理，再把对应的帮助怼到用户脸上
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
         }
     }
 
     //第四个命令，显示矩阵的行列式
-    public void ShowDet(int commandnum, String command) {
-
-        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+    public void ShowDet(int commandnum, String[] splitofcommand) {
 
         //按照 /show matrix <matrix_name> 的描述
-        //切分后的切片有且只有一个
-        if (splitofcommand.length != 1) {
+        //切分后的切片有且只有两个
+        if (splitofcommand.length != 2) {
             //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
@@ -286,7 +295,7 @@ public class CommandForMatrix {
         }
 
         //满足格式则分配下去
-        String name = splitofcommand[0];
+        String name = splitofcommand[1];
         int index = searchIndexOf(name);
 
         //判断该名为 name 的矩阵是否存在
@@ -300,23 +309,21 @@ public class CommandForMatrix {
     }
 
     //第五个命令，显示矩阵的“余矩阵”
-    public void ShowMinor(int commandnum, String command) {
-
-        String[] splitofcommand = command.split(" ");//以空格切分输入的命令
+    public void ShowMinor(int commandnum, String[] splitofcommand) {
 
         //按照 /show minor <matrix_name> <matrix_row> <matrix_col> 的描述
         //现在输入的部分应当满足 <matrix_name> <matrix_row> <matrix_col> 的格式
-        //先判断切分后的个数是否为 3 ，再判断后面两个是不是数字
-        if ((splitofcommand.length != 3) || !Showing.isNumeric(splitofcommand[1]) || !Showing.isNumeric(splitofcommand[2])) {
+        //先判断切分后的个数是否为 4 ，再判断后面两个是不是数字
+        if ((splitofcommand.length != 4) || !Showing.isNumeric(splitofcommand[2]) || !Showing.isNumeric(splitofcommand[3])) {
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
             return;
         }
 
         //满足格式则分配下去
-        String name = splitofcommand[0];
-        int row = Integer.parseInt(splitofcommand[1]);
-        int col = Integer.parseInt(splitofcommand[2]);
+        String name = splitofcommand[1];
+        int row = Integer.parseInt(splitofcommand[2]);
+        int col = Integer.parseInt(splitofcommand[3]);
         int index = searchIndexOf(name);
 
         //判断该名为 name 的矩阵是否存在
@@ -345,14 +352,12 @@ public class CommandForMatrix {
     }
 
     //第六个命令，设定矩阵特定元素的值
-    public void SetMatrix(int commandnum, String command) {
-
-        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+    public void SetMatrix(int commandnum, String[] splitofcommand) {
 
         //按照 /set matrix <matrix_name> <matrix_row> <matrix_col> 的描述
         //现在输入的部分应当满足 <matrix_name> <matrix_row> <matrix_col> 的格式
-        //先判断切分后的个数是否为 3 ，再判断后面两个是不是数字
-        if ((splitofcommand.length != 3) || !Showing.isNumeric(splitofcommand[1]) || !Showing.isNumeric(splitofcommand[2])) {
+        //先判断切分后的个数是否为 4 ，再判断后面两个是不是数字
+        if ((splitofcommand.length != 4) || !Showing.isNumeric(splitofcommand[2]) || !Showing.isNumeric(splitofcommand[3])) {
             //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
@@ -360,9 +365,9 @@ public class CommandForMatrix {
         }
 
         //满足格式则分配下去
-        String name = splitofcommand[0];
-        int row = Integer.parseInt(splitofcommand[1]);
-        int col = Integer.parseInt(splitofcommand[2]);
+        String name = splitofcommand[1];
+        int row = Integer.parseInt(splitofcommand[2]);
+        int col = Integer.parseInt(splitofcommand[3]);
         int index = searchIndexOf(name);
 
         //判断该名为 name 的矩阵是否存在
@@ -387,13 +392,11 @@ public class CommandForMatrix {
     }
 
     //第七个命令，显示矩阵
-    public void ShowMatrix(int commandnum, String command) {
-
-        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+    public void ShowMatrix(int commandnum, String[] splitofcommand) {
 
         //按照 /show matrix <matrix_name> 的描述
-        //切分后的切片有且只有一个
-        if (splitofcommand.length != 1) {
+        //切分后的切片有且只有两个
+        if (splitofcommand.length != 2) {
             //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
@@ -401,7 +404,7 @@ public class CommandForMatrix {
         }
 
         //满足格式则分配下去
-        String name = splitofcommand[0];
+        String name = splitofcommand[1];
         int index = searchIndexOf(name);
 
         //判断该名为 name 的矩阵是否存在
@@ -414,12 +417,11 @@ public class CommandForMatrix {
         matrices[index].showMatrix();
     }
 
-    public void TurnMatrix(int commandnum, String command){
-        String[] splitofcommand = command.split(" ");                 //以空格切分输入的命令
+    public void TurnMatrix(int commandnum, String[] splitofcommand) {
 
         //按照 /turn matrix <matrix_name> 的描述
-        //切分后的切片有且只有一个
-        if (splitofcommand.length != 1) {
+        //切分后的切片有且只有两个
+        if (splitofcommand.length != 2) {
             //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
             System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
             System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
@@ -427,7 +429,7 @@ public class CommandForMatrix {
         }
 
         //满足格式则分配下去
-        String name = splitofcommand[0];
+        String name = splitofcommand[1];
         int index = searchIndexOf(name);
 
         //判断该名为 name 的矩阵是否存在
@@ -440,8 +442,35 @@ public class CommandForMatrix {
         matrices[index].turnOfMatrix().showMatrix();
     }
 
-}
+    private void AdjointMatrix(int commandnum, String[] splitofcommand) {
 
-//TODO: Enter command just like /set matrix <matrix_name> <matrix_row> <matrix_col>
-// > /show det
-// Matrix  doesn't exist, please check the name of matrix you want to show!
+        //按照 /adjoint matrix <matrix_name> 的描述
+        //切分后的切片有且只有两个
+        if (splitofcommand.length != 2) {
+            //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
+            System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
+            System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
+            return;
+        }
+
+        //满足格式则分配下去
+        String name = splitofcommand[1];
+        int index = searchIndexOf(name);
+
+        //判断该名为 name 的矩阵是否存在
+        if (index == -1) {
+            //不存在则提示
+            System.out.printf("\33[31;1mMatrix %s doesn't exist, please check the name of matrix you want to adjoint!\33[0m\n\n", name);
+            return;
+        }
+
+        //存在则显示
+        if (matrices[index].adjointOfMatrix() != null) {
+            matrices[index].adjointOfMatrix().showMatrix();
+        } else {
+            //非方阵则报错
+            System.out.print("\33[31;1mError, it's not a n*n matrix.\33[0m\n\n");
+        }
+
+    }
+}
