@@ -20,6 +20,7 @@ public class Main {
             System.out.print("Enter command just like " + command.Help[seed.nextInt(command.Help.length)] + "\n> ");
             input = scanner.nextLine();                             //再输入
         }
+
     }
 
 }

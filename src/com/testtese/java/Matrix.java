@@ -245,4 +245,41 @@ public class Matrix {
         return result;
     }
 
+    //矩阵乘法（与数相乘）
+    public Matrix multiplyMatrix(double num) {
+
+        //设定一个新的矩阵 result 接收结果，名称为 <num>·<本矩阵>
+        Matrix result = new Matrix(num + "·" + name, matrix.length, matrix[0].length);
+
+        for (int i = 0; i < matrix.length; i++) {               //和运算步骤
+            for (int j = 0; j < matrix[0].length; j++) {
+                result.matrix[i][j] = num * matrix[i][j];
+            }
+        }
+
+        return result;
+    }
+
+    //矩阵乘法（与矩阵相乘）
+    public Matrix multiplyMatrix(Matrix multiplymatrix) {
+
+        //先判断是否左列等于右行，否则提示错误并退出
+        if (matrix[0].length != multiplymatrix.matrix.length) {
+            System.out.print("\33[31;1mError, the col of left matrix doesn't equal to the row of right matrix.\33[0mn");
+            return null;
+        }
+
+        //设定一个新的矩阵 result 接收结果，名称为 <左矩阵><右矩阵>
+        Matrix result = new Matrix(name + multiplymatrix.name, matrix.length, multiplymatrix.matrix[0].length);
+
+        for (int i = 0; i < result.matrix.length; i++) {
+            for (int j = 0; j < result.matrix[0].length; j++) {
+                //这里开始就是c_{i+1,j+1}
+                for (int k = 0; k < matrix[0].length; k++) {
+                    result.matrix[i][j] += matrix[i][k] * multiplymatrix.matrix[k][j];
+                }
+            }
+        }
+        return result;
+    }
 }
