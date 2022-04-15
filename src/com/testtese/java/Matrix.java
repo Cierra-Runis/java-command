@@ -274,10 +274,27 @@ public class Matrix {
 
         for (int i = 0; i < result.matrix.length; i++) {
             for (int j = 0; j < result.matrix[0].length; j++) {
-                //这里开始就是c_{i+1,j+1}
+                //这里开始就是 c_{i+1, j+1}
                 for (int k = 0; k < matrix[0].length; k++) {
                     result.matrix[i][j] += matrix[i][k] * multiplymatrix.matrix[k][j];
                 }
+            }
+        }
+        return result;
+    }
+
+    public Matrix inverseMatrix() {
+
+        //在 detOfMatrix() 里，非方阵以及行列式为零均返回 0
+        if (detOfMatrix() == 0) {
+            return null;
+        }
+
+        //设定一个新的矩阵 result 接收结果
+        Matrix result = new Matrix("Inverse of " + name + " = 1/" + detOfMatrix() + "·" + name + "*", matrix.length, matrix[0].length);
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                result.matrix[i][j] = adjointOfMatrix().matrix[i][j] / detOfMatrix();
             }
         }
         return result;

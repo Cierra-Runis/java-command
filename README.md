@@ -10,22 +10,31 @@
 
 2. 若在文件夹右键有“在终端中打开”字样，则点击该选项
 
-	<center><img alt="" src="/image/1.png"></center>
+    <center><img alt="" src="/image/1.png"></center>
 
 3. 若不没有上述字样，要求打开微软终端后使用cd命令（如cd C:\Users\28642\Desktop）
 
 4. 最终保证终端显示PS C:\Users\28642\Desktop>（这里是我的例子，实际应为jar文件所在文件夹）
 
-	<center><img alt="" src="/image/2.png"></center>
+    <center><img alt="" src="/image/2.png"></center>
 
 5. 输入java -jar Java_Test.jar的命令，如成功执行程序，应显示如下画面
 
-	<center><img alt="" src="/image/3.png"></center>
+    <center><img alt="" src="/image/3.png"></center>
 
-6. 试输入/help命令，则显示所有可用的指令
+    1. 试输入/help命令，则显示所有可用的指令，语法和Minecraft中指令一致，列表如下
 
-7. 来试着创建你的第一个矩阵吧
+       |       语法       |               含义               |
+       | :--------------: | :------------------------------: |
+       |      纯文本      |        纯文本，直接键入。        |
+       |     <参数名>     | 需要使用一合适的值来替换该函数。 |
+       |   [可选输入项]   |        该输入项是可选的。        |
+       | (输入项\|输入项) | 必须地在显示的值中选择一个填写。 |
+       | [输入项\|输入项] | 可选地在显示的值中选择一个填写。 |
+
+6. 来试着创建你的第一个矩阵吧
 
 # 问题报告
 
-若出现问题，将Java_Test.jar同一路径下的Java_Test_log文件夹内对应txt文件发送至2864283875@qq.com
+若出现问题，将Java_Test.jar同一路径下的Java_Test_log文件夹内（还未实装该功能）对应txt文件发送至2864283875@qq.com
+

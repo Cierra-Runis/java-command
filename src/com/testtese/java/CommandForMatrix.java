@@ -19,7 +19,8 @@ public class CommandForMatrix {
             "/show matrix",                                                         //显示
             "/turn matrix",                                                         //转置
             "/adjoin matrix",                                                       //伴随矩阵
-            "/multiply matrix"                                                      //矩阵乘法
+            "/multiply matrix",                                                     //矩阵乘法
+            "/inverse matrix",                                                      //逆矩阵
     };
 
     //下面为帮助库，与指令库不同，帮助库仅作为提示消息
@@ -32,7 +33,8 @@ public class CommandForMatrix {
             "/show matrix <matrix_name>",                                           //显示
             "/turn matrix <matrix_name>",                                           //转置
             "/adjoin matrix <matrix_name>",                                         //伴随矩阵
-            "/multiply matrix (<num>|<matrix_A>) <matrix_B> [to] [<matrix_C>]"      //矩阵乘法
+            "/multiply matrix (<num>|<matrix_A>) <matrix_B> [to] [<matrix_C>]",     //矩阵乘法
+            "/inverse matrix <matrix_name>"                                         //逆矩阵
     };
 
     //使用含参数的构造方法时提供输入的指令
@@ -112,6 +114,9 @@ public class CommandForMatrix {
             }
             case 9: {
                 MultiplyMatrix(commandnum, command);
+            }
+            case 10: {
+                InverseMatrix(commandnum, command);
             }
         }
     }
@@ -609,5 +614,43 @@ public class CommandForMatrix {
                 System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
             }
         }
+    }
+
+    //第十一个指令，逆矩阵
+    public void InverseMatrix(int commandnum, String[] splitofcommand) {
+
+        //按照 /inverse matrix <matrix_name> 的描述
+        //切分后的切片有且只有两个
+        if (splitofcommand.length != 2) {
+            //不满足格式直接 illegal 处理，再把对应的帮助怼到用户脸上
+            System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
+            System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
+            return;
+        }
+
+        //满足格式则分配下去
+        String name = splitofcommand[1];
+        int index = searchIndexOf(name);
+
+        //判断该名为 name 的矩阵是否存在
+        if (index == -1) {
+            //不存在则提示
+            System.out.printf("\33[31;1mMatrix %s doesn't exist, please check the name of matrix you want to show!\33[0m\n\n", name);
+            return;
+        }
+
+        //存在则还需处理 null 情况
+        if (matrices[index].inverseMatrix() == null) {
+            if (matrices[index].matrix.length != matrices[index].matrix[0].length) {
+                //非方阵提示已在上一个 if 语句中输出
+                return;
+            } else {
+                //提示行列式为零
+                System.out.printf("\33[31;1mDet of %s is 0, so it has not inverse matrix!\33[0m\n\n", name);
+                return;
+            }
+        }
+        //最后显示
+        matrices[index].inverseMatrix().showMatrix();
     }
 }
