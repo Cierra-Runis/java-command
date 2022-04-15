@@ -114,9 +114,11 @@ public class CommandForMatrix {
             }
             case 9: {
                 MultiplyMatrix(commandnum, command);
+                break;
             }
             case 10: {
                 InverseMatrix(commandnum, command);
+                break;
             }
         }
     }
@@ -512,13 +514,19 @@ public class CommandForMatrix {
             }
 
             //至此前者一定为数字或存在的矩阵，还需判断后者
+            if (Showing.isNumeric(splitofcommand[2])) {
+                //若后者为数字，直接 illegal 处理，再把对应的帮助怼到用户脸上
+                System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
+                System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
+                return;
+            }
             if (searchIndexOf(splitofcommand[2]) == -1) {
                 //不存在则提示
                 System.out.print("\33[31;1mThis name of matrix doesn't exist, please check the name of matrix you want to multiply!\33[0m\n\n");
                 return;
             }
 
-            //至此后者存在
+            //至此后者存在且不为数字
             String matrix_B = splitofcommand[2];
             int indexofB = searchIndexOf(matrix_B);
 
@@ -563,13 +571,19 @@ public class CommandForMatrix {
             }
 
             //至此前者一定为数字或存在的矩阵，还需判断后者
+            if (Showing.isNumeric(splitofcommand[2])) {
+                //若后者为数字，直接 illegal 处理，再把对应的帮助怼到用户脸上
+                System.out.print("\33[31;1mThis command is illegal!\33[0m\n");
+                System.out.print("Check by this: \33[31;1m" + Help[commandnum] + "\33[0m\n\n");
+                return;
+            }
             if (searchIndexOf(splitofcommand[2]) == -1) {
                 //不存在则提示
                 System.out.print("\33[31;1mThis name of matrix doesn't exist, please check the name of matrix you want to multiply!\33[0m\n\n");
                 return;
             }
 
-            //至此后者存在
+            //至此后者存在且不为数字
             String matrix_B = splitofcommand[2];
             int indexofB = searchIndexOf(matrix_B);
 
@@ -635,7 +649,7 @@ public class CommandForMatrix {
         //判断该名为 name 的矩阵是否存在
         if (index == -1) {
             //不存在则提示
-            System.out.printf("\33[31;1mMatrix %s doesn't exist, please check the name of matrix you want to show!\33[0m\n\n", name);
+            System.out.printf("\33[31;1mMatrix %s doesn't exist, please check the name of matrix you want to inverse!\33[0m\n\n", name);
             return;
         }
 
