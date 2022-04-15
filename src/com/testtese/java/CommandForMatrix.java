@@ -18,7 +18,7 @@ public class CommandForMatrix {
             "/set matrix",                                                          //设定元素
             "/show matrix",                                                         //显示
             "/turn matrix",                                                         //转置
-            "/adjoin matrix",                                                       //伴随矩阵
+            "/adjoint matrix",                                                      //伴随矩阵
             "/multiply matrix",                                                     //矩阵乘法
             "/inverse matrix",                                                      //逆矩阵
     };
@@ -32,7 +32,7 @@ public class CommandForMatrix {
             "/set matrix <matrix_name> <matrix_row> <matrix_col>",                  //设定元素
             "/show matrix <matrix_name>",                                           //显示
             "/turn matrix <matrix_name>",                                           //转置
-            "/adjoin matrix <matrix_name>",                                         //伴随矩阵
+            "/adjoint matrix <matrix_name>",                                        //伴随矩阵
             "/multiply matrix (<num>|<matrix_A>) <matrix_B> [to] [<matrix_C>]",     //矩阵乘法
             "/inverse matrix <matrix_name>"                                         //逆矩阵
     };
