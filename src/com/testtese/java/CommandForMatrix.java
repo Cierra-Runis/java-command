@@ -650,7 +650,7 @@ public class CommandForMatrix {
                 return;
             }
         }
-        //最后显示
+        //最后显示逆矩阵
         matrices[index].inverseMatrix().showMatrix();
     }
 }
