@@ -1,4 +1,4 @@
-package com.testtese.java;
+package pers.cierra_runis.Command;
 
 import java.util.Scanner;
 
@@ -17,6 +17,10 @@ public class Matrix {
     public void showMatrix() {
 
         int[] maxlenofcol = new int[matrix[0].length];          //这里找出每列最长数的长度保存按列存入 []maxlenofcol
+        for (int i = 0; i < matrix[0].length; i++) {
+            maxlenofcol[i] = 0;
+        }
+
         for (int j = 0; j < matrix[0].length; j++) {
             for (int i = 0; i < matrix.length; i++) {
                 String str = String.valueOf(matrix[i][j]);

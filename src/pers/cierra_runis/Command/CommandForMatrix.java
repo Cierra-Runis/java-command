@@ -1,6 +1,7 @@
-package com.testtese.java;
+package pers.cierra_runis.Command;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 public class CommandForMatrix {
@@ -26,7 +27,7 @@ public class CommandForMatrix {
     //下面为帮助库，与指令库不同，帮助库仅作为提示消息
     public final String[] Help = {"/help",                                          //帮助
             "/create matrix <matrix_name> <matrix_row> <matrix_col>",               //创建
-            "/add matrix <matrix_A> <matrix_B> [to] [<matrix_C>]",                  //和运算
+            "/add matrix <matrix_A> <matrix_B> [to <matrix_C>]",                    //和运算
             "/show det <matrix_name>",                                              //行列式
             "/show minor <matrix_name> <matrix_row> <matrix_col>",                  //“余矩阵”
             "/set matrix <matrix_name> <matrix_row> <matrix_col>",                  //设定元素
@@ -40,6 +41,23 @@ public class CommandForMatrix {
     //使用含参数的构造方法时提供输入的指令
     CommandForMatrix(String input) {
         this.input = input;
+    }
+
+    //启动用方法
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+        Random seed = new Random();
+
+        System.out.print("Enter command just like /help\n> ");      //提示
+        String input = scanner.nextLine();                          //第一条命令
+        CommandForMatrix command = new CommandForMatrix(input);     //创建一个 CommandForMatrix 的对象
+
+        while (!input.equals("/exit")) {                            //进入循环，只要输入不是 /exit 就不结束
+            command.match(input);                                   //利用 匹配指令 方法处理命令
+            //提示及随机 tip
+            System.out.print("Enter command just like " + command.Help[seed.nextInt(command.Help.length)] + "\n> ");
+            input = scanner.nextLine();                             //再输入
+        }
     }
 
     //输入矩阵名称查找矩阵库中是否存在该矩阵，存在返回索引，反之为-1
@@ -655,14 +673,13 @@ public class CommandForMatrix {
 
         //存在则还需处理 null 情况
         if (matrices[index].inverseMatrix() == null) {
-            if (matrices[index].matrix.length != matrices[index].matrix[0].length) {
-                //非方阵提示已在上一个 if 语句中输出
-                return;
-            } else {
+            //是方阵时提示
+            if (matrices[index].matrix.length == matrices[index].matrix[0].length) {
                 //提示行列式为零
                 System.out.printf("\33[31;1mDet of %s is 0, so it has not inverse matrix!\33[0m\n\n", name);
-                return;
             }
+            //非方阵提示已在上一个 if 语句中输出
+            return;
         }
         //最后显示逆矩阵
         matrices[index].inverseMatrix().showMatrix();
