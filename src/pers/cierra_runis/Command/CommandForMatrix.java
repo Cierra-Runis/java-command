@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class CommandForMatrix {
 
-    String input;
     Matrix[] matrices = new Matrix[100];
     int matrixindex = 0;
 
@@ -38,11 +37,6 @@ public class CommandForMatrix {
             "/inverse matrix <matrix_name>"                                         //逆矩阵
     };
 
-    //使用含参数的构造方法时提供输入的指令
-    CommandForMatrix(String input) {
-        this.input = input;
-    }
-
     //启动用方法
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -50,12 +44,11 @@ public class CommandForMatrix {
 
         System.out.print("Enter command just like /help\n> ");      //提示
         String input = scanner.nextLine();                          //第一条命令
-        CommandForMatrix command = new CommandForMatrix(input);     //创建一个 CommandForMatrix 的对象
 
         while (!input.equals("/exit")) {                            //进入循环，只要输入不是 /exit 就不结束
-            command.match(input);                                   //利用 匹配指令 方法处理命令
+            match(input);                                           //利用 匹配指令 方法处理命令
             //提示及随机 tip
-            System.out.print("Enter command just like " + command.Help[seed.nextInt(command.Help.length)] + "\n> ");
+            System.out.print("Enter command just like " + Help[seed.nextInt(Help.length)] + "\n> ");
             input = scanner.nextLine();                             //再输入
         }
     }

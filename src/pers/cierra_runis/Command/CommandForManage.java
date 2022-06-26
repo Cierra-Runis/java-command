@@ -6,6 +6,9 @@ import java.util.Scanner;
 
 public class CommandForManage {
 
+    final Student[] students = new Student[100];                                        //学生库（默认 100 上限）
+    int studentindex = 0;                                                               //库中学生人数
+
     //下面是指令库，要求不重复
     public final String[] Command = {
             "/help",                                                                    //帮助
@@ -16,6 +19,7 @@ public class CommandForManage {
             "/show student",                                                            //浏览
             "/show statistic"                                                           //数据
     };
+
     //下面为帮助库，与指令库不同，帮助库仅作为提示消息
     public final String[] Help = {
             "/help",                                                                    //帮助
@@ -26,8 +30,6 @@ public class CommandForManage {
             "/show student (Num|Name|Age|Add|Class|Score) with (up|down)",              //浏览
             "/show statistic"                                                           //数据
     };
-    final Student[] students = new Student[100];                                        //学生库（默认 100 上限）
-    int studentindex = 0;                                                               //库中学生人数
 
     //启动用方法
     public void start() {
@@ -36,12 +38,11 @@ public class CommandForManage {
 
         System.out.print("Enter command just like /help\n> ");      //提示
         String input = scanner.nextLine();                          //第一条命令
-        CommandForManage command = new CommandForManage();          //创建一个 CommandForManage 的对象
 
         while (!input.equals("/exit")) {                            //进入循环，只要输入不是 /exit 就不结束
-            command.match(input);                                   //利用 匹配指令 方法处理命令
+            match(input);                                           //利用 匹配指令 方法处理命令
             //提示及随机 tip
-            System.out.print("Enter command just like " + command.Help[seed.nextInt(command.Help.length)] + "\n> ");
+            System.out.print("Enter command just like " + Help[seed.nextInt(Help.length)] + "\n> ");
             input = scanner.nextLine();                             //再输入
         }
     }
