@@ -66,4 +66,4 @@
 
 # 🔦 声明
 
-无
+- 若出现问题，将 Java_Command.jar 同一路径下的 Java_Command_log 文件夹内（还未实装该功能）对应 txt 文件发送至 byrdsaron@gmail.com
