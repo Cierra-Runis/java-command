@@ -3,7 +3,6 @@ package pers.cierra_runis.Command;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -42,6 +41,7 @@ public class CommandForJavaHome {
     //启动用方法
     public void start() {
         Scanner scanner = new Scanner(System.in);
+        scanner.close();
         Random seed = new Random();
 
         System.out.print("Enter command just like /help\n> ");      //提示
@@ -190,7 +190,6 @@ public class CommandForJavaHome {
             Runtime mt = Runtime.getRuntime();
             Process pro = mt.exec("setx JAVA_HOME \"" + path + "\" /m");
             System.out.print("\33[32;1mDone.\33[0m\n\n");
-            InputStream ers = pro.getErrorStream();
             pro.waitFor();
         } catch (IOException | InterruptedException ioe) {
             ioe.printStackTrace();

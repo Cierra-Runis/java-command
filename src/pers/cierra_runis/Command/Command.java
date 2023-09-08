@@ -7,19 +7,19 @@ public class Command {
     public void start() {
         while (true) {
 
-            String[] modules = {"Matrix", "Manage", "JavaHome"};
+            String[] modules = { "Matrix", "Manage", "JavaHome" };
             StringBuilder select = new StringBuilder();
             for (int i = 0; i < modules.length; i++) {
                 select.append(i > 0 ? "|" : "").append(modules[i]);
             }
 
-            Scanner input = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             System.out.printf("Enter command just like /module (%s)\n> ", select);
-            String str = input.nextLine();
+            String str = scanner.nextLine();
 
             if (Objects.equals(str, "/exit")) {
                 System.out.print("\33[32;1mSee you next time.\33[0m\n");
-                return;
+                System.exit(0);
             }
 
             int i = 0;

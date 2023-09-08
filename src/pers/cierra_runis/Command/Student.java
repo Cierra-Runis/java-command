@@ -45,7 +45,7 @@ public class Student {
 
         //防止空值
         if (Objects.equals(this.name, "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setName();
         }
     }
@@ -59,7 +59,7 @@ public class Student {
         try {
             this.age = input.nextInt();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setAge();
         }
     }
@@ -72,7 +72,7 @@ public class Student {
         this.address[0] = input.nextLine();
         //防止空值
         if (Objects.equals(this.address[0], "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setAddress();
             return;
         }
@@ -81,7 +81,7 @@ public class Student {
         this.address[1] = input.nextLine();
         //防止空值
         if (Objects.equals(this.address[1], "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setAddress();
             return;
         }
@@ -90,7 +90,7 @@ public class Student {
         this.address[2] = input.nextLine();
         //防止空值
         if (Objects.equals(this.address[2], "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setAddress();
             return;
         }
@@ -99,7 +99,7 @@ public class Student {
         this.address[3] = input.nextLine();
         //防止空值
         if (Objects.equals(this.address[3], "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setAddress();
         }
     }
@@ -113,14 +113,14 @@ public class Student {
         try {
             this.kurasu[0] = input.nextInt();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setKurasu();
             return;
         }
 
         //防止人家不是现代人
         if (kurasu[0] < 1000 || kurasu[0] > 9999) {
-            System.out.print("\33[31;1mThis vaule isn't a four-digit number!\33[0m\n");
+            System.out.print("\33[31;1mThis value isn't a four-digit number!\33[0m\n");
             setKurasu();
             return;
         }
@@ -130,7 +130,7 @@ public class Student {
         try {
             this.kurasu[1] = input.nextInt();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setKurasu();
         }
     }
@@ -143,7 +143,7 @@ public class Student {
         try {
             this.score[0] = input.nextDouble();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setScore();
             return;
         }
@@ -153,7 +153,7 @@ public class Student {
         try {
             this.score[1] = input.nextDouble();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setScore();
             return;
         }
@@ -163,7 +163,7 @@ public class Student {
         try {
             this.score[2] = input.nextDouble();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setScore();
             return;
         }
@@ -173,7 +173,7 @@ public class Student {
         try {
             this.score[3] = input.nextDouble();
         } catch (Exception e) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setScore();
         }
 
@@ -189,7 +189,7 @@ public class Student {
         this.senkou = input.nextLine();
         //防止空值
         if (Objects.equals(this.senkou, "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setSenkou();
         }
     }
@@ -202,7 +202,7 @@ public class Student {
         this.sensei = input.nextLine();
         //防止空值
         if (Objects.equals(this.sensei, "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setSenkou();
         }
     }
@@ -214,7 +214,7 @@ public class Student {
         this.target = input.nextLine();
         //防止空值
         if (Objects.equals(this.target, "")) {
-            System.out.print("\33[31;1mThis vaule is illegal!\33[0m\n");
+            System.out.print("\33[31;1mThis value is illegal!\33[0m\n");
             setSenkou();
         }
     }
